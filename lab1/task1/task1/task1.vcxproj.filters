@@ -13,13 +13,75 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы заголовков\Fly">
+      <UniqueIdentifier>{9644e3b0-88bd-4476-9309-f0c93a1482d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Dance">
+      <UniqueIdentifier>{e6644c31-be1e-4c70-b3fb-0f68ea50f0ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Quack">
+      <UniqueIdentifier>{1087d363-11e5-412b-ae23-06ad2b3a138c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="task1.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="SimUDuck.cpp">
+    <ClCompile Include="Duck.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Duck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MallardDuck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RedheadDuck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="DecoyDuck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RubberDuck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelDuck.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Fly\FlyNoWay.h">
+      <Filter>Файлы заголовков\Fly</Filter>
+    </ClInclude>
+    <ClInclude Include="Fly\FlyWithWings.h">
+      <Filter>Файлы заголовков\Fly</Filter>
+    </ClInclude>
+    <ClInclude Include="Fly\IFlyBehavior.h">
+      <Filter>Файлы заголовков\Fly</Filter>
+    </ClInclude>
+    <ClInclude Include="Quack\IQuackBehavior.h">
+      <Filter>Файлы заголовков\Quack</Filter>
+    </ClInclude>
+    <ClInclude Include="Quack\MuteQuackBehavior.h">
+      <Filter>Файлы заголовков\Quack</Filter>
+    </ClInclude>
+    <ClInclude Include="Quack\QuackBehavior.h">
+      <Filter>Файлы заголовков\Quack</Filter>
+    </ClInclude>
+    <ClInclude Include="Quack\SqueakBehavior.h">
+      <Filter>Файлы заголовков\Quack</Filter>
+    </ClInclude>
+    <ClInclude Include="Dance\IDanceBehavior.h">
+      <Filter>Файлы заголовков\Dance</Filter>
+    </ClInclude>
+    <ClInclude Include="Dance\MinuetBehavior.h">
+      <Filter>Файлы заголовков\Dance</Filter>
+    </ClInclude>
+    <ClInclude Include="Dance\NoDanceBehavior.h">
+      <Filter>Файлы заголовков\Dance</Filter>
+    </ClInclude>
+    <ClInclude Include="Dance\WaltzBehavior.h">
+      <Filter>Файлы заголовков\Dance</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

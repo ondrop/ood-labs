@@ -141,8 +141,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SimUDuck.cpp" />
+    <ClCompile Include="Duck.cpp" />
     <ClCompile Include="task1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dance\IDanceBehavior.h" />
+    <ClInclude Include="Dance\MinuetBehavior.h" />
+    <ClInclude Include="Dance\NoDanceBehavior.h" />
+    <ClInclude Include="Dance\WaltzBehavior.h" />
+    <ClInclude Include="DecoyDuck.h" />
+    <ClInclude Include="Duck.h" />
+    <ClInclude Include="Fly\FlyNoWay.h" />
+    <ClInclude Include="Fly\FlyWithWings.h" />
+    <ClInclude Include="Fly\IFlyBehavior.h" />
+    <ClInclude Include="MallardDuck.h" />
+    <ClInclude Include="ModelDuck.h" />
+    <ClInclude Include="Quack\IQuackBehavior.h" />
+    <ClInclude Include="Quack\MuteQuackBehavior.h" />
+    <ClInclude Include="Quack\QuackBehavior.h" />
+    <ClInclude Include="Quack\SqueakBehavior.h" />
+    <ClInclude Include="RedheadDuck.h" />
+    <ClInclude Include="RubberDuck.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
