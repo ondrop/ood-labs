@@ -20,7 +20,7 @@ public class Main {
             }
             writer.flush();
 
-            MyFrame frame = new MyFrame("Shapes", 1000, 1000, shapes);
+            MyFrame frame = new MyFrame("Shapes", 1920, 1080, shapes);
         } catch (Exception e) {
             e.printStackTrace();
         }
