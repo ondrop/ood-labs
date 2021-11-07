@@ -1,8 +1,9 @@
-package com.company;
+package com.company.shape;
 
 import java.awt.*;
+import java.awt.Shape;
 
-public class Circle implements Shape {
+public class Circle extends BaseShape {
     private double radius;
     private Point center;
 
@@ -11,10 +12,23 @@ public class Circle implements Shape {
         this.setRadius(circleRadius);
     }
 
+    public Circle() throws Exception {
+        this.setCenter(new Point(50, 50));
+        this.setRadius(50);
+    }
+
     @Override
     public void draw(Graphics graphics) {
         Point center = this.getCenter();
-        graphics.drawArc((int)(center.getX() - getRadius()), (int)(center.getY() - getRadius()), (int)(this.getRadius() * 2.0), (int)(this.getRadius() * 2.0), 0, 360);
+        Graphics2D graphics2D = (Graphics2D) graphics;
+
+        Point leftTop = calcLeftTopPoint();
+        graphics2D.setColor(getBackgroundColor());
+        graphics2D.fillOval((int)leftTop.getX(), (int)leftTop.getY(), (int)getWidth(), (int)getHeight());
+
+        graphics2D.setColor(getBorderColor());
+        graphics2D.setStroke(new BasicStroke(getBorderWidth()));
+        graphics2D.drawArc((int)(center.getX() - getRadius()), (int)(center.getY() - getRadius()), (int)(this.getRadius() * 2.0), (int)(this.getRadius() * 2.0), 0, 360);
     }
 
     @Override

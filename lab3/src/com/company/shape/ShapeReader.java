@@ -1,9 +1,10 @@
-package com.company;
+package com.company.shape;
+
+import com.company.shape.*;
 
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ShapeReader extends BufferedReader {
 

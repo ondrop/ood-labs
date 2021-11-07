@@ -1,4 +1,4 @@
-package com.company;
+package com.company.shape;
 
 public enum ShapeType {
     CIRCLE,

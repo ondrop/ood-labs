@@ -6,17 +6,26 @@ import com.company.shape.ShapeCompound;
 
 import java.awt.*;
 
-public class ChangeBorderBackgroundColorCommand implements Command {
+public class ChangeShapeBorderColorCommand implements Command {
+
+    private ToolPanel toolPanel;
+
+    public ChangeShapeBorderColorCommand(ToolPanel toolPanel) {
+        this.toolPanel = toolPanel;
+    }
 
     @Override
     public void execute() {
         Application frame = Application.getInstance();
 
-        Color color = ToolPanel.getLastPickedColor();
-        for (ShapeCompound shapeCompound : frame.getSelectedCompounds()) {
-            shapeCompound.setBorderColor(color);
-        }
+        Color color = toolPanel.getLastPickedColor();
+        if (color != null) {
+            for (ShapeCompound shapeCompound : frame.getSelectedCompounds()) {
+                System.out.println(color);
+                shapeCompound.setBorderColor(color);
+            }
 
-        frame.repaint();
+            frame.repaint();
+        }
     }
 }

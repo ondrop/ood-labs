@@ -1,31 +1,35 @@
-package com.company.frame;
+package com.company;
 
-import com.company.ApplicationFacade;
+import com.company.listener.FrameKeyListener;
 import com.company.shape.ShapeCompound;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Point;
-import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Application extends JFrame {
-    private static Application uniqueInstance = new Application("Frame", 1920, 1080);
+
+    private static Application uniqueInstance;
 
     private boolean shiftPressed = false;
     private Point prevPt;
-    protected ArrayList<ShapeCompound> shapes;
+    protected ArrayList<ShapeCompound> shapes = new ArrayList<ShapeCompound>();
     private ShapeCompound choosedComponent;
+    private ShapePanel shapePanel;
+    private ToolPanel toolPanel;
 
     private Application(String frameTitle, int width, int height) {
         super();
 
-        Container container = getContentPane();
-        container.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        JButton button = new JButton("Обычная кнопка");
-        JButton button1 = new JButton("Обычная кнопка 1");
-        container.add(button);
-        container.add(button1);
+        this.setLayout(new BorderLayout());
+
+        toolPanel = new ToolPanel();
+        add(toolPanel, BorderLayout.NORTH);
+
+        shapePanel = new ShapePanel();
+        shapePanel.setBackground(Color.WHITE);
+        add(shapePanel, BorderLayout.CENTER);
 
         this.setSize(width, height);
         this.setTitle(frameTitle);
@@ -34,144 +38,80 @@ public class Application extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        this.addMouseListener(new ClickListener());
-        this.addKeyListener(new KeyListener());
-        this.addMouseMotionListener(new DragListener());
+        this.addKeyListener(new FrameKeyListener());
     }
 
     public static Application getInstance() {
+        if (uniqueInstance == null) {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            double width = screenSize.getWidth();
+            double height = screenSize.getHeight();
+
+            uniqueInstance = new Application("Frame", (int)width, (int)height);
+        }
+
         return uniqueInstance;
+    }
+
+    public void addShape(ShapeCompound shapeCompound) {
+        this.shapes.add(shapeCompound);
     }
 
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
-        for (ShapeCompound shapeCompound : this.shapes) {
-            shapeCompound.draw(graphics);
-        }
+
+        this.shapePanel.setShapes(this.shapes);
     }
 
-    private class ClickListener extends MouseAdapter {
-
-        public void mousePressed(MouseEvent e) {
-            prevPt = e.getPoint();
-            boolean inShape = false;
-            for (int i = shapes.size() - 1; i >= 0; i--) {
-                ShapeCompound shapeCompound = shapes.get(i);
-                inShape = shapeCompound.isInsideBounds(e.getPoint().getX(), e.getPoint().getY());
-                if (inShape) {
-                    choosedComponent = shapeCompound;
-                    if (!shiftPressed) {
-                        for (ShapeCompound shape : shapes) {
-                            shape.changeSelection(false);
-                        }
-                    }
-
-                    boolean selection = true;
-                    if (shiftPressed) {
-                        selection = !shapeCompound.isSelected();
-                    }
-
-                    shapeCompound.changeSelection(selection);
-                    break;
-                }
-            }
-
-
-            if (!inShape) {
-                for (ShapeCompound shape : shapes) {
-                    shape.changeSelection(false);
-                }
-            }
-
-            repaint();
-        }
-
-        public void mouseReleased(MouseEvent e) {
-            choosedComponent = null;
-        }
+    public Point getPrevPt() {
+        return prevPt;
     }
 
-    private class DragListener extends MouseMotionAdapter {
-
-        public void mouseDragged(MouseEvent e) {
-            Point currentPt = e.getPoint();
-
-            if (choosedComponent != null) {
-                choosedComponent.translate(
-                        (int) (currentPt.getX() - prevPt.getX()),
-                        (int) (currentPt.getY() - prevPt.getY())
-                );
-            }
-
-            prevPt = currentPt;
-            repaint();
-        }
+    public void setPrevPt(Point newPrevPt) {
+        prevPt = newPrevPt;
     }
 
-    private class KeyListener implements java.awt.event.KeyListener {
+    public boolean getShiftPressed() {
+        return shiftPressed;
+    }
 
-        @Override
-        public void keyTyped(KeyEvent e) {}
+    public void changeShiftPressed(boolean newShiftPressed) {
+        shiftPressed = newShiftPressed;
+    }
 
-        @Override
-        public synchronized void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                shiftPressed = true;
-            }
+    public ArrayList<ShapeCompound> getShapes() {
+        return shapes;
+    }
 
-            if ((e.getKeyCode() == KeyEvent.VK_G) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-                ArrayList<ShapeCompound> selectedShapes = new ArrayList<>();
-                for (ShapeCompound shape : shapes) {
-                    if (shape.isSelected()) {
-                        selectedShapes.add(shape);
-                    }
-                }
+    public ShapeCompound getChoosedComponent() {
+        return choosedComponent;
+    }
 
-                if (selectedShapes.size() > 1) {
-                    ShapeCompound newCompound = new ShapeCompound();
-                    for (ShapeCompound selectedShape : selectedShapes) {
-                        selectedShape.changeSelection(false);
-                        for (com.company.shape.Shape shape : selectedShape.getChildren()) {
-                            newCompound.add(shape);
-                        }
+    public void setChoosedComponent(ShapeCompound newChoosedComponent) {
+        choosedComponent = newChoosedComponent;
+    }
 
-                        shapes.remove(selectedShape);
-                    }
+    public void removeShape(ShapeCompound shapeCompound) {
+        shapes.remove(shapeCompound);
+    }
 
-                    newCompound.changeSelection(true);
-                    shapes.add(newCompound);
-                    repaint();
-                }
-            }
-
-            if ((e.getKeyCode() == KeyEvent.VK_U) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-                ArrayList<ShapeCompound> selectedCompounds = new ArrayList<>();
-                for (ShapeCompound shape : shapes) {
-                    if (shape.isSelected()) {
-                        selectedCompounds.add(shape);
-                    }
-                }
-
-                if (selectedCompounds.size() == 1) {
-                    ShapeCompound selectedCompound = selectedCompounds.get(0);
-                    if (selectedCompound.getChildren().size() > 1) {
-                        for (com.company.shape.Shape shape : selectedCompound.getChildren()) {
-                            ShapeCompound shapeWrapper = new ShapeCompound(shape);
-                            shapeWrapper.changeSelection(true);
-                            shapes.add(shapeWrapper);
-                        }
-
-                        shapes.remove(selectedCompound);
-                        repaint();
-                    }
-                }
+    public ArrayList<ShapeCompound> getSelectedCompounds() {
+        ArrayList<ShapeCompound> selectedCompounds = new ArrayList<>();
+        for (ShapeCompound shapeCompound : shapes) {
+            if (shapeCompound.isSelected()) {
+                selectedCompounds.add(shapeCompound);
             }
         }
 
-        @Override
-        public synchronized void keyReleased(KeyEvent e) {
-            shiftPressed = false;
-        }
+        return selectedCompounds;
+    }
+
+    public ShapePanel getShapePanel() {
+        return shapePanel;
+    }
+
+    public ToolPanel getToolPanel() {
+        return toolPanel;
     }
 }

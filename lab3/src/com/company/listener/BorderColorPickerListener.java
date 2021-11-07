@@ -8,22 +8,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BackgroundColorPickerListener implements ActionListener {
+public class BorderColorPickerListener implements ActionListener {
 
-    public BackgroundColorPickerListener() {}
+    public BorderColorPickerListener() {}
 
     @Override
     public void actionPerformed(ActionEvent e) {
         ColorPickerDialog dialog = new ColorPickerDialog();
-        Color color = ColorPickerDialog.showDialog(dialog,"Color picker", Color.BLUE, false);
-        System.out.println(color);
+        Color color = ColorPickerDialog.showDialog(dialog,"Border color picker", Color.BLUE, false);
 
         Application frame = Application.getInstance();
 
         ToolPanel toolPanel = frame.getToolPanel();
         toolPanel.setLastPickedColor(color);
-        toolPanel.setState(toolPanel.getComponentsIsNotSelectedState());
-        toolPanel.changeColor();
+        toolPanel.setBorderColor();
 
         frame.repaint();
     }

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.shape;
 
 public class Point {
     private double x;

@@ -1,14 +1,19 @@
-package com.company;
+package com.company.shape;
 
 import java.awt.*;
 
-public class Rectangle implements Shape {
+public class Rectangle extends BaseShape {
     private Point leftTop;
     private Point rightBottom;
 
     public Rectangle(Point leftTop, Point rightBottom) {
         this.setLeftTop(leftTop);
         this.setRightBottom(rightBottom);
+    }
+    
+    public Rectangle() {
+        this.setLeftTop(new Point(0, 0));
+        this.setRightBottom(new Point(100, 100));
     }
 
     @Override
@@ -17,7 +22,14 @@ public class Rectangle implements Shape {
         Point rightBottom = this.getRightBottom();
         int width = (int)Math.abs(rightBottom.getX() - leftTop.getX());
         int height = (int)Math.abs(leftTop.getY() - rightBottom.getY());
-        graphics.drawRect((int)leftTop.getX(), (int)leftTop.getY(), width, height);
+
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        graphics2D.setColor(getBackgroundColor());
+        graphics2D.fillRect((int)leftTop.getX(), (int)leftTop.getY(), width, height);
+
+        graphics2D.setColor(getBorderColor());
+        graphics2D.setStroke(new BasicStroke(getBorderWidth()));
+        graphics2D.drawRect((int)leftTop.getX(), (int)leftTop.getY(), width, height);
     }
 
     @Override

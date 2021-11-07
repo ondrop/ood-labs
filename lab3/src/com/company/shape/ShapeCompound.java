@@ -1,11 +1,11 @@
-package com.company;
+package com.company.shape;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ListIterator;
 
-public class ShapeCompound implements Shape {
+public class ShapeCompound extends BaseShape {
     protected ArrayList<Shape> children = new ArrayList<Shape>();
     private boolean isSelected = false;
 
@@ -38,6 +38,10 @@ public class ShapeCompound implements Shape {
         children.clear();
     }
 
+    public ArrayList<Shape> getChildren() {
+        return children;
+    }
+
     public boolean isSelected() {
         return isSelected;
     }
@@ -63,8 +67,9 @@ public class ShapeCompound implements Shape {
         BasicStroke dashed = new BasicStroke(2.0f,
                 BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-        Point leftTop = this.calcLeftTopPoint();
+        com.company.shape.Point leftTop = this.calcLeftTopPoint();
         graphics2D.setStroke(dashed);
+        graphics2D.setColor(Color.BLACK);
         graphics2D.drawRect((int)leftTop.getX(), (int)leftTop.getY(), (int)this.getWidth(), (int)this.getHeight());
         graphics2D.setStroke(defaultStroke);
     }
@@ -87,7 +92,7 @@ public class ShapeCompound implements Shape {
     @Override
     public double getWidth() {
         double maxWidth = 0;
-        Point leftTop = calcLeftTopPoint();
+        com.company.shape.Point leftTop = calcLeftTopPoint();
         for (Shape child : children) {
             double childsRelativeX = child.calcLeftTopPoint().getX() - leftTop.getX();
             double childWidth = childsRelativeX + child.getWidth();
@@ -102,7 +107,7 @@ public class ShapeCompound implements Shape {
     @Override
     public double getHeight() {
         double maxHeight = 0;
-        Point leftTop = calcLeftTopPoint();
+        com.company.shape.Point leftTop = calcLeftTopPoint();
         for (Shape child : children) {
             double childsRelativeY = child.calcLeftTopPoint().getY() - leftTop.getY();
             double childHeight = childsRelativeY + child.getHeight();
@@ -115,16 +120,16 @@ public class ShapeCompound implements Shape {
     }
 
     @Override
-    public Point calcLeftTopPoint() {
+    public com.company.shape.Point calcLeftTopPoint() {
         if (children.size() == 0) {
-            return new Point(0, 0);
+            return new com.company.shape.Point(0, 0);
         }
 
-        Point leftTop = children.get(0).calcLeftTopPoint();
+        com.company.shape.Point leftTop = children.get(0).calcLeftTopPoint();
         double x = leftTop.getX();
         double y = leftTop.getY();
         for (Shape child : children) {
-            Point childLeftTop = child.calcLeftTopPoint();
+            com.company.shape.Point childLeftTop = child.calcLeftTopPoint();
             if (childLeftTop.getX() < x) {
                 x = childLeftTop.getX();
             }
@@ -134,7 +139,7 @@ public class ShapeCompound implements Shape {
             }
         }
 
-        return new Point(x, y);
+        return new com.company.shape.Point(x, y);
     }
 
     @Override
@@ -153,6 +158,27 @@ public class ShapeCompound implements Shape {
     public void translate(int x, int y) {
         for (Shape child : children) {
             child.translate(x, y);
+        }
+    }
+
+    @Override
+    public void setBackgroundColor(Color color) {
+        for (Shape child : children) {
+            child.setBackgroundColor(color);
+        }
+    }
+
+    @Override
+    public void setBorderColor(Color borderColor) {
+        for (Shape child : children) {
+            child.setBorderColor(borderColor);
+        }
+    }
+
+    @Override
+    public void setBorderWidth(int borderWidth) {
+        for (Shape child : children) {
+            child.setBorderWidth(borderWidth);
         }
     }
 }

@@ -1,11 +1,10 @@
-package com.company;
+package com.company.shape;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
-public class Triangle implements Shape {
+public class Triangle extends BaseShape {
     private Point vertex1;
     private Point vertex2;
     private Point vertex3;
@@ -15,6 +14,12 @@ public class Triangle implements Shape {
         this.setVertex2(vertex2);
         this.setVertex3(vertex3);
     }
+    
+    public Triangle() {
+        this.setVertex1(new Point(0, 100));
+        this.setVertex2(new Point(50, 0));
+        this.setVertex3(new Point(100, 100));
+    }
 
     @Override
     public void draw(Graphics graphics) {
@@ -23,7 +28,20 @@ public class Triangle implements Shape {
         Point vertex3 = this.getVertex3();
         int[] xPoints = {(int)vertex1.getX(), (int)vertex2.getX(), (int)vertex3.getX()};
         int[] yPoints = {(int)vertex1.getY(), (int)vertex2.getY(), (int)vertex3.getY()};
-        graphics.drawPolygon(
+
+        Graphics2D graphics2D = (Graphics2D) graphics;
+
+        graphics2D.setColor(getBackgroundColor());
+        graphics2D.fillPolygon(
+                xPoints,
+                yPoints,
+                3
+        );
+
+        graphics2D.setColor(getBorderColor());
+        graphics2D.setStroke(new BasicStroke(getBorderWidth()));
+
+        graphics2D.drawPolygon(
                 xPoints,
                 yPoints,
                 3
