@@ -21,7 +21,6 @@ public class ChangeShapeBorderColorCommand implements Command {
         Color color = toolPanel.getLastPickedColor();
         if (color != null) {
             for (ShapeCompound shapeCompound : frame.getSelectedCompounds()) {
-                System.out.println(color);
                 shapeCompound.setBorderColor(color);
             }
 

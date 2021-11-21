@@ -21,7 +21,10 @@ public class Application extends JFrame {
 
     private Application(String frameTitle, int width, int height) {
         super();
+        run(frameTitle, width, height);
+    }
 
+    private void run(String frameTitle, int width, int height) {
         this.setLayout(new BorderLayout());
 
         toolPanel = new ToolPanel();
