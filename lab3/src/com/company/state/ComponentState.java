@@ -1,6 +1,6 @@
 package com.company.state;
 
-public interface State {
+public interface ComponentState {
     void setBackgroundColor();
     void setBorderColor();
     void setBorderWidth();

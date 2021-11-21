@@ -2,11 +2,11 @@ package com.company.state;
 
 import com.company.ToolPanel;
 
-public class ComponentsIsNotSelectedState implements State {
+public class ComponentsIsNotSelectedComponentState implements ComponentState {
 
     private ToolPanel toolPanel;
 
-    public ComponentsIsNotSelectedState(ToolPanel toolPanel) {
+    public ComponentsIsNotSelectedComponentState(ToolPanel toolPanel) {
         this.toolPanel = toolPanel;
     }
 

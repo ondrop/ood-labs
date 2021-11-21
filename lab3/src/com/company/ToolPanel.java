@@ -7,9 +7,9 @@ import com.company.listener.BorderWidthListener;
 import com.company.shape.Circle;
 import com.company.shape.Rectangle;
 import com.company.shape.Triangle;
-import com.company.state.ComponentsIsNotSelectedState;
-import com.company.state.ComponentsIsSelectedState;
-import com.company.state.State;
+import com.company.state.ComponentsIsNotSelectedComponentState;
+import com.company.state.ComponentsIsSelectedComponentState;
+import com.company.state.ComponentState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,17 +19,17 @@ public class ToolPanel extends JPanel {
     private Color lastPickedColor;
     private int lastPickedBorderWidth;
 
-    private State componentsIsSelectedState;
-    private State componentsIsNotSelectedState;
+    private ComponentState componentsIsSelectedComponentState;
+    private ComponentState componentsIsNotSelectedComponentState;
 
-    private State state;
+    private ComponentState componentState;
 
     public ToolPanel() {
 
-        componentsIsSelectedState = new ComponentsIsSelectedState(this);
-        componentsIsNotSelectedState = new ComponentsIsNotSelectedState(this);
+        componentsIsSelectedComponentState = new ComponentsIsSelectedComponentState(this);
+        componentsIsNotSelectedComponentState = new ComponentsIsNotSelectedComponentState(this);
 
-        state = componentsIsNotSelectedState;
+        componentState = componentsIsNotSelectedComponentState;
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(Color.GRAY);
@@ -65,12 +65,12 @@ public class ToolPanel extends JPanel {
         add(borderWidthBtn);
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setState(ComponentState componentState) {
+        this.componentState = componentState;
     }
 
-    public State getState() {
-        return state;
+    public ComponentState getState() {
+        return componentState;
     }
 
     public Color getLastPickedColor() {
@@ -90,22 +90,22 @@ public class ToolPanel extends JPanel {
     }
 
     public void setBackgroundColor() {
-        state.setBackgroundColor();
+        componentState.setBackgroundColor();
     }
 
     public void setBorderColor() {
-        state.setBorderColor();
+        componentState.setBorderColor();
     }
 
     public void setBorderWidth() {
-        state.setBorderWidth();
+        componentState.setBorderWidth();
     }
 
-    public State getComponentsIsSelectedState() {
-        return componentsIsSelectedState;
+    public ComponentState getComponentsIsSelectedState() {
+        return componentsIsSelectedComponentState;
     }
 
-    public State getComponentsIsNotSelectedState() {
-        return componentsIsNotSelectedState;
+    public ComponentState getComponentsIsNotSelectedState() {
+        return componentsIsNotSelectedComponentState;
     }
 }

@@ -1,6 +1,7 @@
 package com.company.listener;
 
 import com.company.Application;
+import com.company.memento.Caretaker;
 import com.company.shape.ShapeCompound;
 
 import java.awt.event.KeyEvent;
@@ -61,6 +62,11 @@ public class FrameKeyListener implements KeyListener {
                     frame.repaint();
                 }
             }
+        }
+
+        if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+            frame.getCaretaker().undo();
+            frame.repaint();
         }
     }
 

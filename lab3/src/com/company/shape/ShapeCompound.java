@@ -1,5 +1,7 @@
 package com.company.shape;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -180,5 +182,19 @@ public class ShapeCompound extends BaseShape {
         for (Shape child : children) {
             child.setBorderWidth(borderWidth);
         }
+    }
+
+    @Override
+    public JSONObject getCoordinates() {
+        return null;
+    }
+
+    public ArrayList<JSONObject> getChildStates() {
+        ArrayList<JSONObject> states = new ArrayList<>();
+        for (Shape child : children) {
+            states.add(child.getState());
+        }
+
+        return states;
     }
 }

@@ -1,9 +1,14 @@
 package com.company.shape;
 
+import org.json.JSONObject;
+
 import java.awt.*;
-import java.awt.Shape;
+import java.util.HashMap;
 
 public class Circle extends BaseShape {
+    final String CENTER_FIELD = "center";
+    final String RADIUS_FIELD = "radius";
+
     private double radius;
     private Point center;
 
@@ -63,7 +68,7 @@ public class Circle extends BaseShape {
     }
 
     public String getGid() {
-        return ShapeType.CIRCLE.toString();
+        return Circle.class.getName();
     }
 
     @Override
@@ -92,5 +97,33 @@ public class Circle extends BaseShape {
     public void translate(int x, int y) {
         Point center = this.getCenter();
         this.setCenter(new Point(center.getX() + x, center.getY() + y));
+    }
+
+    @Override
+    public JSONObject getCoordinates() {
+        JSONObject center = new JSONObject();
+        center.put("X", getCenter().getX());
+        center.put("Y", getCenter().getY());
+
+        JSONObject coordinates = new JSONObject();
+        coordinates.put(CENTER_FIELD, center);
+        coordinates.put(RADIUS_FIELD, getRadius());
+
+        return coordinates;
+    }
+
+    @Override
+    public void setData(JSONObject shapeData) {
+        super.setData(shapeData);
+        try {
+            JSONObject coordinates = shapeData.getJSONObject(COORDINATES_FIELD);
+            JSONObject center = coordinates.getJSONObject(CENTER_FIELD);
+            Point newCenter = new Point(center.getDouble("X"), center.getDouble("Y"));
+            setCenter(newCenter);
+
+            setRadius(coordinates.getDouble(RADIUS_FIELD));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

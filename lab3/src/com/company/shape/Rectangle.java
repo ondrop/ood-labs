@@ -1,8 +1,15 @@
 package com.company.shape;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Rectangle extends BaseShape {
+    final String POINTS_FIELD = "points";
+
     private Point leftTop;
     private Point rightBottom;
 
@@ -80,7 +87,7 @@ public class Rectangle extends BaseShape {
 
     @Override
     public String getGid() {
-        return ShapeType.RECTANGLE.toString();
+        return Rectangle.class.getName();
     }
 
     @Override
@@ -89,5 +96,44 @@ public class Rectangle extends BaseShape {
         this.setLeftTop(new Point(leftTop.getX() + x, leftTop.getY() + y));
         Point rightBottom = this.getRightBottom();
         this.setRightBottom(new Point(rightBottom.getX() + x, rightBottom.getY() + y));
+    }
+
+    @Override
+    public JSONObject getCoordinates() {
+        ArrayList<JSONObject> points = new ArrayList<>();
+
+        JSONObject leftTopPoint = new JSONObject();
+        leftTopPoint.put("X", getLeftTop().getX());
+        leftTopPoint.put("Y", getLeftTop().getY());
+        points.add(leftTopPoint);
+
+        JSONObject rightBottomPoint = new JSONObject();
+        rightBottomPoint.put("X", getRightBottom().getX());
+        rightBottomPoint.put("Y", getRightBottom().getY());
+        points.add(rightBottomPoint);
+
+        JSONObject coordinates = new JSONObject();
+
+        coordinates.put(POINTS_FIELD, points);
+
+        return coordinates;
+    }
+
+    @Override
+    public void setData(JSONObject shapeData) {
+        super.setData(shapeData);
+        try {
+            JSONObject coordinates = shapeData.getJSONObject(COORDINATES_FIELD);
+            JSONArray points = coordinates.getJSONArray(POINTS_FIELD);
+            JSONObject leftTop = (JSONObject) points.get(0);
+            Point newLeftTop = new Point(leftTop.getDouble("X"), leftTop.getDouble("Y"));
+            setLeftTop(newLeftTop);
+
+            JSONObject rightBottom = (JSONObject) points.get(1);
+            Point newRightBottom = new Point(rightBottom.getDouble("X"), rightBottom.getDouble("Y"));
+            setRightBottom(newRightBottom);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

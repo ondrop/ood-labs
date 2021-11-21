@@ -5,7 +5,7 @@ import com.company.command.ChangeShapeBackgroundColorCommand;
 import com.company.command.ChangeShapeBorderColorCommand;
 import com.company.command.ChangeShapeBorderWidthCommand;
 
-public class ComponentsIsSelectedState implements State {
+public class ComponentsIsSelectedComponentState implements ComponentState {
 
     private ToolPanel toolPanel;
 
@@ -13,7 +13,7 @@ public class ComponentsIsSelectedState implements State {
     private ChangeShapeBorderWidthCommand changeShapeBorderWidthCommand;
     private ChangeShapeBackgroundColorCommand changeShapeBackgroundColorCommand;
 
-    public ComponentsIsSelectedState(ToolPanel toolPanel) {
+    public ComponentsIsSelectedComponentState(ToolPanel toolPanel) {
         this.toolPanel = toolPanel;
         changeShapeBackgroundColorCommand = new ChangeShapeBackgroundColorCommand(toolPanel);
         changeShapeBorderColorCommand = new ChangeShapeBorderColorCommand(toolPanel);

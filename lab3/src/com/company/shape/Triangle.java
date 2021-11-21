@@ -1,10 +1,16 @@
 package com.company.shape;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Triangle extends BaseShape {
+    final String POINTS_FIELD = "points";
+
     private Point vertex1;
     private Point vertex2;
     private Point vertex3;
@@ -94,7 +100,7 @@ public class Triangle extends BaseShape {
     }
 
     public String getGid() {
-        return ShapeType.TRIANGLE.toString();
+        return Triangle.class.getName();
     }
 
     @Override
@@ -155,5 +161,53 @@ public class Triangle extends BaseShape {
         this.setVertex2(new Point(vertex2.getX() + x, vertex2.getY() + y));
         Point vertex3 = this.getVertex3();
         this.setVertex3(new Point(vertex3.getX() + x, vertex3.getY() + y));
+    }
+
+    @Override
+    public JSONObject getCoordinates() {
+        ArrayList<JSONObject> points = new ArrayList<>();
+
+        JSONObject vertex1 = new JSONObject();
+        vertex1.put("X", getVertex1().getX());
+        vertex1.put("Y", getVertex1().getY());
+        points.add(vertex1);
+
+        JSONObject vertex2 = new JSONObject();
+        vertex2.put("X", getVertex2().getX());
+        vertex2.put("Y", getVertex2().getY());
+        points.add(vertex2);
+
+        JSONObject vertex3 = new JSONObject();
+        vertex3.put("X", getVertex3().getX());
+        vertex3.put("Y", getVertex3().getY());
+        points.add(vertex3);
+
+        JSONObject coordinates = new JSONObject();
+
+        coordinates.put(POINTS_FIELD, points);
+
+        return coordinates;
+    }
+
+    @Override
+    public void setData(JSONObject shapeData) {
+        super.setData(shapeData);
+        try {
+            JSONObject coordinates = shapeData.getJSONObject(COORDINATES_FIELD);
+            JSONArray points = coordinates.getJSONArray(POINTS_FIELD);
+            JSONObject vertex1 = (JSONObject) points.get(0);
+            Point newVertex1 = new Point(vertex1.getDouble("X"), vertex1.getDouble("Y"));
+            setVertex1(newVertex1);
+
+            JSONObject vertex2 = (JSONObject) points.get(1);
+            Point newVertex2 = new Point(vertex2.getDouble("X"), vertex2.getDouble("Y"));
+            setVertex2(newVertex2);
+
+            JSONObject vertex3 = (JSONObject) points.get(2);
+            Point newVertex3 = new Point(vertex3.getDouble("X"), vertex3.getDouble("Y"));
+            setVertex3(newVertex3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,8 +1,17 @@
 package com.company.shape;
 
+import org.json.JSONObject;
+
 import java.awt.*;
+import java.util.HashMap;
 
 public interface Shape {
+    String TYPE_FIELD = "type";
+    String COORDINATES_FIELD = "coordinates";
+    String BACKGROUND_COLOR_FIELD  = "backgroundColor";
+    String BORDER_COLOR_FIELD  = "borderColor";
+    String BORDER_WIDTH_FIELD  = "borderWidth";
+
     void draw(Graphics graphics);
 
     double getArea();
@@ -32,4 +41,10 @@ public interface Shape {
     int getBorderWidth();
 
     void setBorderWidth(int borderWidth);
+
+    JSONObject getState();
+
+    JSONObject getCoordinates();
+
+    void setData(JSONObject shapeData);
 }
