@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.ListIterator;
 
 public class ShapeCompound extends BaseShape {
+
     protected ArrayList<Shape> children = new ArrayList<Shape>();
     private boolean isSelected = false;
 
@@ -189,11 +190,15 @@ public class ShapeCompound extends BaseShape {
         return null;
     }
 
-    public ArrayList<JSONObject> getChildStates() {
-        ArrayList<JSONObject> states = new ArrayList<>();
+    @Override
+    public JSONObject getState() {
+        JSONObject states = new JSONObject();
+        ArrayList<JSONObject> childShapes = new ArrayList<>();
         for (Shape child : children) {
-            states.add(child.getState());
+            childShapes.add(child.getState());
         }
+
+        states.put(CHILDREN_FIELD, childShapes);
 
         return states;
     }

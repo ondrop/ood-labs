@@ -27,11 +27,8 @@ public class FrameKeyListener implements KeyListener {
                 ShapeCompound newCompound = new ShapeCompound();
                 for (ShapeCompound selectedCompound : selectedCompounds) {
                     selectedCompound.changeSelection(false);
-                    for (com.company.shape.Shape shape : selectedCompound.getChildren()) {
-                        newCompound.add(shape);
-                    }
-
-                    frame.removeShape(selectedCompound);
+                    newCompound.add(selectedCompound);
+                    Application.getInstance().removeShape(selectedCompound);
                 }
 
                 newCompound.changeSelection(true);
@@ -49,9 +46,9 @@ public class FrameKeyListener implements KeyListener {
                     if (selectedCompound.getChildren().size() > 1) {
                         ungrouped = true;
                         for (com.company.shape.Shape shape : selectedCompound.getChildren()) {
-                            ShapeCompound shapeWrapper = new ShapeCompound(shape);
-                            shapeWrapper.changeSelection(true);
-                            frame.addShape(shapeWrapper);
+                            ShapeCompound shapeCompound = (ShapeCompound) shape;
+                            shapeCompound.changeSelection(true);
+                            frame.addShape(shapeCompound);
                         }
 
                         frame.removeShape(selectedCompound);

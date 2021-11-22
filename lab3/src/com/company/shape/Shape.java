@@ -11,6 +11,7 @@ public interface Shape {
     String BACKGROUND_COLOR_FIELD  = "backgroundColor";
     String BORDER_COLOR_FIELD  = "borderColor";
     String BORDER_WIDTH_FIELD  = "borderWidth";
+    String CHILDREN_FIELD = "children";
 
     void draw(Graphics graphics);
 

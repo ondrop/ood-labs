@@ -5,13 +5,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Memento {
-    private ArrayList<ArrayList<JSONObject>> state;
+    private ArrayList<JSONObject> state;
 
-    public Memento(ArrayList<ArrayList<JSONObject>> newState) {
+    public Memento(ArrayList<JSONObject> newState) {
         state = newState;
     }
 
-    public ArrayList<ArrayList<JSONObject>> getState() {
+    public ArrayList<JSONObject> getState() {
         return state;
     }
 }

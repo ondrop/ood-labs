@@ -5,13 +5,17 @@ import com.company.memento.Caretaker;
 import com.company.memento.Originator;
 import com.company.shape.ShapeCompound;
 import com.company.state.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Point;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.company.shape.Shape.CHILDREN_FIELD;
 
 public class Application extends JFrame {
 
@@ -65,7 +69,7 @@ public class Application extends JFrame {
         this.addKeyListener(new FrameKeyListener());
     }
 
-    public static Application getInstance() {
+    public static synchronized Application getInstance() {
         if (uniqueInstance == null) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             double width = screenSize.getWidth();
@@ -93,24 +97,58 @@ public class Application extends JFrame {
         super.paint(graphics);
     }
 
-    public static ArrayList<ShapeCompound> parseStateShapes(ArrayList<ArrayList<JSONObject>> state) {
+    public static ArrayList<ShapeCompound> parseStateShapes(ArrayList<JSONObject> state) {
         ArrayList<ShapeCompound> parsedShapes = new ArrayList<>();
-        for (ArrayList<JSONObject> shapes : state) {
-            ShapeCompound compound = new ShapeCompound();
-            for (JSONObject shapeData : shapes) {
-                try {
-                    com.company.shape.Shape shape = (com.company.shape.Shape) Class.forName((String) shapeData.get(com.company.shape.Shape.TYPE_FIELD)).getConstructor().newInstance();
-                    shape.setData(shapeData);
-                    compound.add(shape);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        for (JSONObject shapes : state) {
+            ShapeCompound compound = parseCompoundChildren(shapes);
+            if (compound != null) {
+                parsedShapes.add(compound);
             }
-
-            parsedShapes.add(compound);
         }
 
         return parsedShapes;
+    }
+
+    public static ShapeCompound parseCompoundChildren(JSONObject compound) {
+        if (!compound.has(CHILDREN_FIELD)) {
+            try {
+                ShapeCompound shapeCompound = new ShapeCompound();
+                com.company.shape.Shape shape = (com.company.shape.Shape) Class.forName((String) compound.get(com.company.shape.Shape.TYPE_FIELD)).getConstructor().newInstance();
+                shape.setData(compound);
+                shapeCompound.add(shape);
+                return shapeCompound;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        JSONArray children = compound.getJSONArray(CHILDREN_FIELD);
+        if (children != null && !children.isEmpty()) {
+            ShapeCompound shapeCompound = new ShapeCompound();
+            for (int i = 0; i < children.length(); i++) {
+                JSONObject child = children.getJSONObject(i);
+                if (child.has(CHILDREN_FIELD)) {
+                    ShapeCompound compoundChildren = parseCompoundChildren(child);
+                    if (compoundChildren != null) {
+                        shapeCompound.add(compoundChildren);
+                    }
+                } else {
+                    try {
+                        com.company.shape.Shape shape = (com.company.shape.Shape) Class.forName((String) child.get(com.company.shape.Shape.TYPE_FIELD)).getConstructor().newInstance();
+                        shape.setData(child);
+                        shapeCompound.add(shape);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            return shapeCompound;
+        }
+
+        return null;
     }
 
     public Point getPrevPt() {
@@ -172,10 +210,10 @@ public class Application extends JFrame {
         return caretaker;
     }
 
-    public ArrayList<ArrayList<JSONObject>> getAppState() {
-        ArrayList<ArrayList<JSONObject>> appState = new ArrayList<>();
+    public ArrayList<JSONObject> getAppState() {
+        ArrayList<JSONObject> appState = new ArrayList<>();
         for (ShapeCompound shapeCompound : shapes) {
-            appState.add(shapeCompound.getChildStates());
+            appState.add(shapeCompound.getState());
         }
 
         return appState;

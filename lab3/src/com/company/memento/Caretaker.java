@@ -15,33 +15,16 @@ public class Caretaker {
     }
 
     public void save() {
-        System.out.println("save");
-        Memento memento1 = originator.createMemento();
-        ArrayList<ArrayList<JSONObject>> appState = Application.getInstance().getAppState();
-        System.out.println(memento1.getState());
-        System.out.println(appState);
-        System.out.println(originator.getState());
+        Memento oldState = originator.createMemento();
+        ArrayList<JSONObject> appState = Application.getInstance().getAppState();
         if (!originator.getState().toString().equals(appState.toString())) {
-            System.out.println("Save 2");
-            System.out.println(Application.getInstance().getShapes());
-            System.out.println("Save 2 end");
-            setMemento(memento1);
+            setMemento(oldState);
             originator.setState(appState);
         }
-
-        if (memento != null) {
-            System.out.println(memento.getState());
-        }
-        System.out.println(originator.getState());
     }
 
     public void undo() {
-        System.out.println("undo");
-        Memento oldMemento = originator.createMemento();
         originator.setMemento(getMemento());
-        System.out.println(getMemento().getState());
-        System.out.println(originator.getState());
-
         Application.getInstance().setHistoryState(Application.getInstance().getHistoryOverwrittenState());
     }
 

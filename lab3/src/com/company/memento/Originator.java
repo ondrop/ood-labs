@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Originator {
-    private ArrayList<ArrayList<JSONObject>> state = new ArrayList<>();
+    private ArrayList<JSONObject> state = new ArrayList<>();
 
     public Originator() {}
 
@@ -18,11 +18,11 @@ public class Originator {
         state = memento.getState();
     }
 
-    public void setState(ArrayList<ArrayList<JSONObject>> state) {
+    public void setState(ArrayList<JSONObject> state) {
         this.state = state;
     }
 
-    public ArrayList<ArrayList<JSONObject>> getState() {
+    public ArrayList<JSONObject> getState() {
         return state;
     }
 }
