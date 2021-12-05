@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.builder.ShapeBuilder;
+import com.company.builder.ShapeDirector;
 import com.company.listener.FrameKeyListener;
 import com.company.memento.Caretaker;
 import com.company.memento.Originator;
@@ -47,7 +49,7 @@ public class Application extends JFrame {
         historyState = historyNotOverwrittenState;
 
         Originator originator = new Originator();
-        originator.setState(new ArrayList<>());
+        originator.setState(new JSONArray());
         caretaker = new Caretaker(originator);
 
         this.setLayout(new BorderLayout());
@@ -97,10 +99,10 @@ public class Application extends JFrame {
         super.paint(graphics);
     }
 
-    public static ArrayList<ShapeCompound> parseStateShapes(ArrayList<JSONObject> state) {
+    public static ArrayList<ShapeCompound> parseStateShapes(JSONArray state) {
         ArrayList<ShapeCompound> parsedShapes = new ArrayList<>();
-        for (JSONObject shapes : state) {
-            ShapeCompound compound = parseCompoundChildren(shapes);
+        for (int i = 0; i < state.length(); i++) {
+            ShapeCompound compound = parseCompoundChildren(state.getJSONObject(i));
             if (compound != null) {
                 parsedShapes.add(compound);
             }
@@ -114,8 +116,9 @@ public class Application extends JFrame {
             try {
                 ShapeCompound shapeCompound = new ShapeCompound();
                 com.company.shape.Shape shape = (com.company.shape.Shape) Class.forName((String) compound.get(com.company.shape.Shape.TYPE_FIELD)).getConstructor().newInstance();
-                shape.setData(compound);
-                shapeCompound.add(shape);
+                ShapeBuilder builder = shape.getBuilder();
+                ShapeDirector.createShape(builder, compound);
+                shapeCompound.add(builder.getResult());
                 return shapeCompound;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,8 +140,9 @@ public class Application extends JFrame {
                 } else {
                     try {
                         com.company.shape.Shape shape = (com.company.shape.Shape) Class.forName((String) child.get(com.company.shape.Shape.TYPE_FIELD)).getConstructor().newInstance();
-                        shape.setData(child);
-                        shapeCompound.add(shape);
+                        ShapeBuilder builder = shape.getBuilder();
+                        ShapeDirector.createShape(builder, child);
+                        shapeCompound.add(builder.getResult());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -210,10 +214,10 @@ public class Application extends JFrame {
         return caretaker;
     }
 
-    public ArrayList<JSONObject> getAppState() {
-        ArrayList<JSONObject> appState = new ArrayList<>();
+    public JSONArray getAppState() {
+        JSONArray appState = new JSONArray();
         for (ShapeCompound shapeCompound : shapes) {
-            appState.add(shapeCompound.getState());
+            appState.put(shapeCompound.getState());
         }
 
         return appState;

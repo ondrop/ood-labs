@@ -1,5 +1,7 @@
 package com.company.shape;
 
+import com.company.builder.RectangleBuilder;
+import com.company.builder.ShapeBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Rectangle extends BaseShape {
-    final String POINTS_FIELD = "points";
+    public static final String POINTS_FIELD = "points";
 
     private Point leftTop;
     private Point rightBottom;
@@ -120,20 +122,7 @@ public class Rectangle extends BaseShape {
     }
 
     @Override
-    public void setData(JSONObject shapeData) {
-        super.setData(shapeData);
-        try {
-            JSONObject coordinates = shapeData.getJSONObject(COORDINATES_FIELD);
-            JSONArray points = coordinates.getJSONArray(POINTS_FIELD);
-            JSONObject leftTop = (JSONObject) points.get(0);
-            Point newLeftTop = new Point(leftTop.getDouble("X"), leftTop.getDouble("Y"));
-            setLeftTop(newLeftTop);
-
-            JSONObject rightBottom = (JSONObject) points.get(1);
-            Point newRightBottom = new Point(rightBottom.getDouble("X"), rightBottom.getDouble("Y"));
-            setRightBottom(newRightBottom);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ShapeBuilder getBuilder() {
+        return new RectangleBuilder();
     }
 }

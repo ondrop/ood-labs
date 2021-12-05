@@ -1,5 +1,6 @@
 package com.company.shape;
 
+import com.company.builder.ShapeBuilder;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -47,5 +48,5 @@ public interface Shape {
 
     JSONObject getCoordinates();
 
-    void setData(JSONObject shapeData);
+    ShapeBuilder getBuilder();
 }

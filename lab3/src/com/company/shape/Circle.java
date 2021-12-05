@@ -1,13 +1,15 @@
 package com.company.shape;
 
+import com.company.builder.CircleBuilder;
+import com.company.builder.ShapeBuilder;
 import org.json.JSONObject;
 
 import java.awt.*;
 import java.util.HashMap;
 
 public class Circle extends BaseShape {
-    final String CENTER_FIELD = "center";
-    final String RADIUS_FIELD = "radius";
+    public static final String CENTER_FIELD = "center";
+    public static final String RADIUS_FIELD = "radius";
 
     private double radius;
     private Point center;
@@ -113,17 +115,7 @@ public class Circle extends BaseShape {
     }
 
     @Override
-    public void setData(JSONObject shapeData) {
-        super.setData(shapeData);
-        try {
-            JSONObject coordinates = shapeData.getJSONObject(COORDINATES_FIELD);
-            JSONObject center = coordinates.getJSONObject(CENTER_FIELD);
-            Point newCenter = new Point(center.getDouble("X"), center.getDouble("Y"));
-            setCenter(newCenter);
-
-            setRadius(coordinates.getDouble(RADIUS_FIELD));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ShapeBuilder getBuilder() {
+        return new CircleBuilder();
     }
 }

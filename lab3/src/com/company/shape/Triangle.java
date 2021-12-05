@@ -1,5 +1,8 @@
 package com.company.shape;
 
+import com.company.builder.RectangleBuilder;
+import com.company.builder.ShapeBuilder;
+import com.company.builder.TriangleBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -190,24 +193,7 @@ public class Triangle extends BaseShape {
     }
 
     @Override
-    public void setData(JSONObject shapeData) {
-        super.setData(shapeData);
-        try {
-            JSONObject coordinates = shapeData.getJSONObject(COORDINATES_FIELD);
-            JSONArray points = coordinates.getJSONArray(POINTS_FIELD);
-            JSONObject vertex1 = (JSONObject) points.get(0);
-            Point newVertex1 = new Point(vertex1.getDouble("X"), vertex1.getDouble("Y"));
-            setVertex1(newVertex1);
-
-            JSONObject vertex2 = (JSONObject) points.get(1);
-            Point newVertex2 = new Point(vertex2.getDouble("X"), vertex2.getDouble("Y"));
-            setVertex2(newVertex2);
-
-            JSONObject vertex3 = (JSONObject) points.get(2);
-            Point newVertex3 = new Point(vertex3.getDouble("X"), vertex3.getDouble("Y"));
-            setVertex3(newVertex3);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public ShapeBuilder getBuilder() {
+        return new TriangleBuilder();
     }
 }

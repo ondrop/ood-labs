@@ -1,9 +1,10 @@
 package com.company;
 
-import com.company.listener.AddShapeActionListener;
-import com.company.listener.BackgroundColorPickerListener;
-import com.company.listener.BorderColorPickerListener;
-import com.company.listener.BorderWidthListener;
+import com.company.file_reader.BinaryFileReader;
+import com.company.file_reader.JsonFileReader;
+import com.company.file_savers.SaveBinaryFile;
+import com.company.file_savers.SaveJsonFile;
+import com.company.listener.*;
 import com.company.shape.Circle;
 import com.company.shape.Rectangle;
 import com.company.shape.Triangle;
@@ -63,6 +64,26 @@ public class ToolPanel extends JPanel {
         borderWidthBtn.setFocusable(false);
         borderWidthBtn.addActionListener(new BorderWidthListener());
         add(borderWidthBtn);
+
+        JButton saveAsBinaryBtn = new JButton("Save as binary file");
+        saveAsBinaryBtn.setFocusable(false);
+        saveAsBinaryBtn.addActionListener(new SaveFileListener(SaveBinaryFile.class.getName()));
+        add(saveAsBinaryBtn);
+
+        JButton saveAsTextBtn = new JButton("Save as text file");
+        saveAsTextBtn.setFocusable(false);
+        saveAsTextBtn.addActionListener(new SaveFileListener(SaveJsonFile.class.getName()));
+        add(saveAsTextBtn);
+
+        JButton openAsBinaryBtn = new JButton("Open as binary file");
+        openAsBinaryBtn.setFocusable(false);
+        openAsBinaryBtn.addActionListener(new OpenFileListener(BinaryFileReader.class.getName()));
+        add(openAsBinaryBtn);
+
+        JButton openAsTextBtn = new JButton("Open as text file");
+        openAsTextBtn.setFocusable(false);
+        openAsTextBtn.addActionListener(new OpenFileListener(JsonFileReader.class.getName()));
+        add(openAsTextBtn);
     }
 
     public void setState(ComponentState componentState) {

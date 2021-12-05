@@ -1,5 +1,6 @@
 package com.company.shape;
 
+import com.company.builder.ShapeBuilder;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -46,9 +47,7 @@ abstract class BaseShape implements Shape {
     }
 
     @Override
-    public void setData(JSONObject shapeData) {
-        setBackgroundColor(new Color(shapeData.getInt(BACKGROUND_COLOR_FIELD)));
-        setBorderColor(new Color(shapeData.getInt(BORDER_COLOR_FIELD)));
-        setBorderWidth(shapeData.getInt(BORDER_WIDTH_FIELD));
+    public ShapeBuilder getBuilder() {
+        return null;
     }
 }

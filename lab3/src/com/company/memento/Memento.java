@@ -1,17 +1,18 @@
 package com.company.memento;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class Memento {
-    private ArrayList<JSONObject> state;
+    private JSONArray state;
 
-    public Memento(ArrayList<JSONObject> newState) {
+    public Memento(JSONArray newState) {
         state = newState;
     }
 
-    public ArrayList<JSONObject> getState() {
+    public JSONArray getState() {
         return state;
     }
 }

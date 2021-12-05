@@ -1,6 +1,7 @@
 package com.company.memento;
 
 import com.company.Application;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Caretaker {
 
     public void save() {
         Memento oldState = originator.createMemento();
-        ArrayList<JSONObject> appState = Application.getInstance().getAppState();
+        JSONArray appState = Application.getInstance().getAppState();
         if (!originator.getState().toString().equals(appState.toString())) {
             setMemento(oldState);
             originator.setState(appState);

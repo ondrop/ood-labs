@@ -1,12 +1,13 @@
 package com.company.memento;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Originator {
-    private ArrayList<JSONObject> state = new ArrayList<>();
+    private JSONArray state = new JSONArray();
 
     public Originator() {}
 
@@ -18,11 +19,11 @@ public class Originator {
         state = memento.getState();
     }
 
-    public void setState(ArrayList<JSONObject> state) {
+    public void setState(JSONArray state) {
         this.state = state;
     }
 
-    public ArrayList<JSONObject> getState() {
+    public JSONArray getState() {
         return state;
     }
 }
